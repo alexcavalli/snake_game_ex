@@ -31,7 +31,8 @@ defmodule SnakeGame.Mixfile do
   defp deps do
     [
       {:credo, "~> 0.6", only: [:dev, :test]},
-      {:distillery, "~> 1.0"}
+      {:distillery, "~> 1.0"},
+      {:ex_ncurses, "~> 0.3"}
     ]
   end
 end

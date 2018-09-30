@@ -3,7 +3,7 @@ defmodule SnakeGame.GameState do
     board_size: 20,
     snake_direction: :right,
     snake_cells: [{3, 2}, {2, 2}],
-    food: {5, 5}
+    food: {5, 5},
   }
   @valid_dirs [:up, :down, :left, :right]
 
@@ -17,6 +17,10 @@ defmodule SnakeGame.GameState do
 
   def reset do
     Agent.update(__MODULE__, fn _ -> @initial_state end)
+  end
+
+  def add_window(window) do
+    Agent.update(__MODULE__, fn s -> Map.put(s, :window, window) end)
   end
 
   def turn_snake(dir) when dir in @valid_dirs do

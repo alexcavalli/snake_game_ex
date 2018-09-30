@@ -21,8 +21,8 @@ defmodule SnakeGame.GameClock do
   end
 
   defp redraw_board do
-    GameState.get()
-    |> Renderer.render()
-    |> ScreenWriter.draw()
+    state = GameState.get()
+    new_board = Renderer.render(state)
+    ScreenWriter.draw(state, new_board)
   end
 end

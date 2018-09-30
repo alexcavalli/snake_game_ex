@@ -5,22 +5,30 @@ defmodule SnakeGame.InputHandler do
     Task.start_link(fn -> start() end)
   end
 
-  # Lots of code copied from
-  # http://elixirsips.com/episodes/062_quickie_synth.html
+  # Lots of control-handling (ExNCurses) code copied from
+  # https://github.com/fhunleth/snake/blob/master/lib/snake/ui.ex
   def start do
     create_window(100, 200)
     |> read_loop()
   end
 
   def create_window(width, height) do
-    gs_server = :gs.start()
-    :gs.create(:window, gs_server, [width: width, height: height, keypress: true, map: true])
+    ExNcurses.initscr()
+
+    win = ExNcurses.newwin(height - 1, width, 1, 0)
+    ExNcurses.listen()
+    ExNcurses.noecho()
+    ExNcurses.keypad()
+    ExNcurses.curs_set(0)
+
+    GameState.add_window(win)
+
+    win
   end
 
   def read_loop(window) do
     receive do
-      {:gs, ^window, :keypress, _data, args} ->
-        key = hd(args)
+      {:ex_ncurses, :key, key} ->
         Controls.send_command_for(key)
     end
     read_loop(window)
